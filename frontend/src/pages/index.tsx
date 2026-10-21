@@ -817,8 +817,9 @@ export default function Home() {
                         <th
                           className="h-7.75 px-2.5 first:pl-2.5 last:w-8.5 last:pr-1"
                           key={label || "actions"}
+                          aria-label={label || "Actions"}
                         >
-                          {label || <span className="sr-only">Actions</span>}
+                          {label}
                         </th>
                       ))}
                     </tr>
