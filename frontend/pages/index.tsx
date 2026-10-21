@@ -1,5 +1,6 @@
 import Icon from "@/components/Icon";
 import Sidebar from "@/components/Sidebar";
+import { useToast } from "@/components/Showtoast";
 import {
   chartSets,
   IconName,
@@ -168,7 +169,7 @@ export default function Home() {
   const [activeNav, setActiveNav] = useState("Overview");
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
-  const [toast, setToast] = useState("");
+  const { showToast } = useToast();
   const chart = chartSets[period];
   const orderCount = 1284;
   const previousSalesPoint = chart.values[chart.values.length - 2];
@@ -201,10 +202,6 @@ export default function Home() {
     [products, query, stockFilter],
   );
 
-  function showToast(message: string, duration = 2600) {
-    setToast(message);
-    window.setTimeout(() => setToast(""), duration);
-  }
   function addProduct(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -748,14 +745,6 @@ export default function Home() {
               </div>
             </form>
           </section>
-        </div>
-      )}
-      {toast && (
-        <div className="fixed right-5.5 bottom-5.5 z-40 flex items-center gap-2.25 rounded border border-[#dce7da] bg-white px-4 py-3 text-[11px] text-[#495c4a] shadow-lg">
-          <span className="grid size-4.25 place-items-center rounded-full bg-[#e9f2e8] text-[10px] text-[#4e8059]">
-            ✓
-          </span>
-          {toast}
         </div>
       )}
     </>
