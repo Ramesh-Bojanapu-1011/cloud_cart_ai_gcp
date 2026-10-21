@@ -1,3 +1,11 @@
+import Icon from "@/components/Icon";
+import Sidebar from "@/components/Sidebar";
+import {
+  chartSets,
+  IconName,
+  initialProducts,
+  Period,
+} from "@/utils/interfaces";
 import Head from "next/head";
 import Image from "next/image";
 import React, { useMemo, useState } from "react";
@@ -10,165 +18,6 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-
-type Product = {
-  name: string;
-  category: string;
-  price: number;
-  stock: number;
-  sold: number;
-  image: string;
-  status: "In stock" | "Low stock" | "Out of stock";
-};
-const initialProducts: Product[] = [
-  {
-    name: "Everyday Tote",
-    category: "Accessories",
-    price: 38,
-    stock: 8,
-    sold: 124,
-    image: "photo-1590874103328-eac38a683ce7",
-    status: "Low stock",
-  },
-  {
-    name: "Stoneware Set",
-    category: "Home & living",
-    price: 64,
-    stock: 42,
-    sold: 98,
-    image: "photo-1610701596007-11502861dcfa",
-    status: "In stock",
-  },
-  {
-    name: "Cloud Knit",
-    category: "Apparel",
-    price: 82,
-    stock: 5,
-    sold: 86,
-    image: "photo-1576566588028-4147f3842f27",
-    status: "Low stock",
-  },
-  {
-    name: "Ridge Bottle",
-    category: "Accessories",
-    price: 28,
-    stock: 0,
-    sold: 73,
-    image: "photo-1602143407151-7111542de6e8",
-    status: "Out of stock",
-  },
-];
-const chartSets = {
-  "7 days": {
-    labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-    values: [38, 53, 45, 67, 56, 78, 69],
-    total: "$18,420",
-  },
-  "30 days": {
-    labels: ["1", "5", "10", "15", "20", "25", "30"],
-    values: [34, 52, 43, 69, 55, 78, 88],
-    total: "$84,254",
-  },
-  "12 months": {
-    labels: ["Jan", "Mar", "May", "Jul", "Sep", "Nov", "Dec"],
-    values: [28, 42, 39, 61, 56, 73, 91],
-    total: "$942,680",
-  },
-};
-type Period = keyof typeof chartSets;
-type IconName =
-  | "grid"
-  | "box"
-  | "bag"
-  | "chart"
-  | "spark"
-  | "settings"
-  | "search"
-  | "bell"
-  | "plus"
-  | "arrow"
-  | "more"
-  | "chevron"
-  | "close";
-
-function Icon({ name, size = 18 }: { name: IconName; size?: number }) {
-  const paths: Record<IconName, React.ReactNode> = {
-    grid: (
-      <>
-        <rect x="3" y="3" width="7" height="7" rx="1.5" />
-        <rect x="14" y="3" width="7" height="7" rx="1.5" />
-        <rect x="3" y="14" width="7" height="7" rx="1.5" />
-        <rect x="14" y="14" width="7" height="7" rx="1.5" />
-      </>
-    ),
-    box: (
-      <>
-        <path d="m12 3 9 5-9 5-9-5 9-5Z" />
-        <path d="m3 8 9 5 9-5M3 8v9l9 5 9-5V8M12 13v9" />
-      </>
-    ),
-    bag: (
-      <>
-        <path d="M5 8h14l1 13H4L5 8Z" />
-        <path d="M9 8V6a3 3 0 0 1 6 0v2" />
-      </>
-    ),
-    chart: (
-      <>
-        <path d="M4 19V5M4 19h17" />
-        <path d="m7 15 4-4 3 2 6-7" />
-      </>
-    ),
-    spark: (
-      <>
-        <path d="m12 3 1.9 5.8L20 11l-6.1 2.2L12 19l-2-5.8L4 11l6-2.2L12 3Z" />
-        <path d="m19 14 .9 2.1L22 17l-2.1.9L19 20l-.9-2.1L16 17l2.1-.9L19 14Z" />
-      </>
-    ),
-    settings: (
-      <>
-        <circle cx="12" cy="12" r="3" />
-        <path
-          d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.8-.6a8 8 0 0 1-1.6.9l-.4 1.9h-2.8l-.4-1.9a8 8 0 0 1-1.6-.9l-1.8.6-1.4-2.4 1.4-1.1a7 7 0 0 1 0-1.9l-1.4-1.2 1.4-2.4 1.8.6a8 8 0 0 1 1.6-.9l.4-1.9h2.8l.4 1.9a8 8 0 0 1 1.6.9l1.8-.6 1.4 2.4-1.4 1.2a7 7 0 0 1-.1 1.8Z"
-          transform="translate(-1 -1) scale(1.08)"
-        />
-      </>
-    ),
-    search: (
-      <>
-        <circle cx="10.8" cy="10.8" r="6.8" />
-        <path d="m16 16 4.5 4.5" />
-      </>
-    ),
-    bell: <path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" />,
-    plus: <path d="M12 5v14M5 12h14" />,
-    arrow: <path d="M7 17 17 7M7 7h10v10" />,
-    more: (
-      <>
-        <circle cx="5" cy="12" r="1" />
-        <circle cx="12" cy="12" r="1" />
-        <circle cx="19" cy="12" r="1" />
-      </>
-    ),
-    chevron: <path d="m7 10 5 5 5-5" />,
-    close: <path d="m18 6-12 12M6 6l12 12" />,
-  };
-  return (
-    <svg
-      aria-hidden="true"
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.7"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      {paths[name]}
-    </svg>
-  );
-}
 
 function RevenueChart({
   labels,
@@ -385,19 +234,6 @@ export default function Home() {
     if (label !== "Overview") showToast(`${label} view is coming soon`, 2400);
   }
 
-  const navItems: {
-    label: string;
-    icon: IconName;
-    count?: string;
-    special?: boolean;
-  }[] = [
-    { label: "Overview", icon: "grid" },
-    { label: "Products", icon: "box", count: "24" },
-    { label: "Orders", icon: "bag", count: "12" },
-    { label: "Analytics", icon: "chart" },
-    { label: "AI insights", icon: "spark", special: true },
-  ];
-
   return (
     <>
       <Head>
@@ -409,110 +245,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <div className="min-h-screen bg-[#f8f9f5] text-[#252b25] caret-transparent">
-        <aside className="fixed inset-y-0 left-0 z-10 flex w-61.5 flex-col border-r border-[#eeefe9] bg-white px-4 pt-6.5 pb-3.5 max-[1180px]:w-54.5 max-[860px]:w-16.5 max-[860px]:items-center max-[860px]:px-2 max-[860px]:py-5 max-[620px]:w-13.5 max-[620px]:px-1">
-          <a
-            className="mb-7.75 ml-1.25 flex w-max items-center gap-2.5 text-[#252b25] no-underline max-[860px]:m-0 max-[860px]:mb-7.25"
-            href="#overview"
-            aria-label="CloudCart AI home"
-          >
-            <span className="flex size-6.25 items-end gap-0.5 overflow-hidden rounded-[8px_8px_8px_3px] bg-[#35634a] p-1">
-              <i className="h-2.25 w-1 skew-[-18deg] rounded bg-white opacity-70" />
-              <i className="h-3.5 w-1 skew-[-18deg] rounded bg-white opacity-85" />
-              <i className="h-4.25 w-1 skew-[-18deg] rounded bg-white" />
-            </span>
-            <span className="font-[Manrope,sans-serif] text-lg font-extrabold max-[860px]:hidden">
-              cloudcart
-              <span className="ml-0.5 text-[11px] font-bold text-[#c87951]">
-                ai
-              </span>
-            </span>
-          </a>
-          <button
-            className="mb-7.75 flex min-h-14.5 items-center gap-2.5 rounded-md border border-[#eceee8] p-2.25 text-left max-[860px]:mb-5.5 max-[860px]:size-11 max-[860px]:min-h-0 max-[860px]:justify-center max-[860px]:border-0 max-[860px]:p-1"
-            aria-label="Switch store"
-          >
-            <span className="grid size-8.5 shrink-0 place-items-center rounded bg-[#f3e5d8] font-[Manrope,sans-serif] text-[17px] font-extrabold text-[#a4603f]">
-              S
-            </span>
-            <span className="grid min-w-0 flex-1 gap-0.75 text-left max-[860px]:hidden">
-              <strong className="truncate text-[11px]">Sunday Supply</strong>
-              <span className="text-[10px] text-[#858b82]">Starter plan</span>
-            </span>
-            <span className="text-[#777e76]">
-              <Icon name="chevron" size={15} />
-            </span>
-          </button>
-          <div className="mb-2 ml-2.25 text-[9px] font-bold tracking-[1px] text-[#a0a49c] max-[860px]:hidden">
-            WORKSPACE
-          </div>
-          <nav
-            className="grid gap-0.75 max-[860px]:w-full"
-            aria-label="Main navigation"
-          >
-            {navItems.map((item) => (
-              <button
-                key={item.label}
-                title={item.label}
-                className={`relative flex min-h-9.75 w-full items-center gap-2.75 rounded px-2.5 text-left text-[#70766e] transition hover:bg-[#f7f8f4] hover:text-[#252b25] max-[860px]:mx-auto max-[860px]:size-12 max-[860px]:min-h-11 max-[860px]:justify-center max-[860px]:p-0 ${activeNav === item.label ? "bg-[#eef3ed] font-semibold text-[#315a43] before:absolute before:top-2.25 before:bottom-2.25 before:left-0 before:w-0.5 before:rounded before:bg-[#52775d]" : ""}`}
-                onClick={() => chooseNav(item.label)}
-              >
-                <Icon name={item.icon} />
-                <span className="flex-1 text-xs max-[860px]:hidden">
-                  {item.label}
-                </span>
-                {item.special && (
-                  <span className="rounded-sm bg-[#f7e9df] px-1 py-0.5 text-[8px] font-bold text-[#b36b47] max-[860px]:absolute max-[860px]:-top-0.5 max-[860px]:-right-0.5 max-[860px]:px-0.5 max-[860px]:text-[6px]">
-                    NEW
-                  </span>
-                )}
-                {item.count && (
-                  <span className="min-w-5.5 rounded bg-[#f2f3ef] px-1.25 py-0.75 text-center text-[10px] text-[#8b9188] max-[860px]:hidden">
-                    {item.count}
-                  </span>
-                )}
-              </button>
-            ))}
-          </nav>
-          <div className="mt-auto w-full">
-            <div className="relative mb-5.25 overflow-hidden rounded-md border border-[#eee7dc] bg-[#faf8f1] p-3 max-[860px]:hidden">
-              <span className="mb-2.75 grid size-6.5 place-items-center rounded bg-[#f2e7d2] text-[#a56f3c]">
-                <Icon name="spark" size={16} />
-              </span>
-              <strong className="block max-w-37.5 text-[11px]">
-                Your weekly brief is ready
-              </strong>
-              <p className="my-1.5 mb-3 text-[10px] leading-[1.55] text-[#858479]">
-                3 trends worth a closer look this week.
-              </p>
-              <button
-                className="text-[10px] font-bold text-[#56705a]"
-                onClick={() => chooseNav("AI insights")}
-              >
-                Explore insights ↗
-              </button>
-            </div>
-            <button
-              title="Settings"
-              className={`flex min-h-9.75 w-full items-center gap-2.75 rounded px-2.5 text-left text-[#70766e] hover:bg-[#f7f8f4] max-[860px]:mx-auto max-[860px]:size-12 max-[860px]:min-h-11 max-[860px]:justify-center max-[860px]:p-0 ${activeNav === "Settings" ? "bg-[#eef3ed] text-[#315a43]" : ""}`}
-              onClick={() => chooseNav("Settings")}
-            >
-              <Icon name="settings" />
-              <span className="text-xs max-[860px]:hidden">Settings</span>
-            </button>
-            <div className="mt-3 flex items-center gap-2.25 border-t border-[#eeefe9] px-1 pt-3.25 max-[860px]:mx-auto max-[860px]:w-12 max-[860px]:justify-center">
-              <span className="grid size-7.75 shrink-0 place-items-center rounded-full border border-[#e4d2c3] bg-[#f3e9df] text-[9px] font-bold text-[#785d4a]">
-                AM
-              </span>
-              <span className="grid min-w-0 flex-1 gap-0.75 max-[860px]:hidden">
-                <strong className="truncate text-[11px]">Alex Morgan</strong>
-                <span className="text-[10px] text-[#858b82]">Store owner</span>
-              </span>
-              <span className="text-[#858b82]">
-                <Icon name="more" size={18} />
-              </span>
-            </div>
-          </div>
-        </aside>
+        <Sidebar />
         <main
           id="overview"
           className="ml-61.5 min-h-screen max-[1180px]:ml-54.5 max-[860px]:ml-16.5 max-[620px]:ml-13.5"
